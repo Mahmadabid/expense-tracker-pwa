@@ -10,7 +10,7 @@ type Transactions = {
     amount: number;
 }
 
-type TransObj =Transactions[]
+type TransObj = Transactions[]
 
 const initialState = {
     state: [

@@ -202,6 +202,10 @@ input[type='number'] {
     color:rgb(185, 10, 10);
 }
 
+.radio {
+    outline: none;
+}
+
 @media screen and (max-width: 380px) {
     .container {
         width: 320px;
