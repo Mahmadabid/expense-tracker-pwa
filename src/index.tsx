@@ -3,6 +3,18 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import firebase from "./Services/firebase";
+
+const messaging = firebase.messaging();
+
+messaging
+  .requestPermission()
+  .then(() => {
+    return messaging.getToken();
+  })
+  .then((token: any) => {
+    console.log("token", token);
+  });
 
 ReactDOM.render(
   <React.StrictMode>
