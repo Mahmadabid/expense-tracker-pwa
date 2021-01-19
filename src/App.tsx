@@ -1,25 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import { Header } from "./Components/Header";
+import { Balance } from './Components/Balance';
+import { IncomeExpense } from "./Components/Income_Expense";
+import { TransactionHistory } from "./Components/TransactionHistory";
+import { AddTransaction } from "./Components/AddTransaction";
+import { AppProvider } from './Context/GlobalState'
 
 function App() {
+
+  const [islit, setlit] = useState(true);
+  
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AppProvider>
+      <div className={`${islit? '': 'dark'} body`}>
+        <Header islit={islit} setlit={setlit} />
+        <div className="container">
+          <Balance />
+          <IncomeExpense />
+          <TransactionHistory />
+          <AddTransaction />
+        </div>
+      </div>
+    </AppProvider>
   );
 }
 
