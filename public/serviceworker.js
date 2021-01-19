@@ -1,44 +1,81 @@
-const CACHE_NAME = "version-1";
-const urlsToCache = [ 'index.html' ];
+const cacheName = "exp-app-v1";
+
+const cacheAssets = [
+  "./",
+  "index.html",
+  "./images/logo.png",
+  "manifest.json",
+  "./static/js/bundle.js",
+  "./static/js/main.chunk.js",
+  "./static/js/0.chunk.js",
+];
 
 const self = this;
 
-// Install SW
-self.addEventListener('install', (event) => {
-    event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then((cache) => {
-                console.log('Opened cache');
+self.addEventListener("install", (e) => {
+  console.log("Service Worker: Installed");
 
-                return cache.addAll(urlsToCache);
-            })
-    )
+  e.waitUntil(
+    caches
+      .open(cacheName)
+      .then((cache) => {
+        console.log("Service Worker: Caching Files");
+        cache.addAll(cacheAssets);
+      })
+      .then(() => self.skipWaiting())
+  );
 });
 
-// Listen for requests
-self.addEventListener('fetch', (event) => {
-    event.respondWith(
-        caches.match(event.request)
-            .then(() => {
-                return fetch(event.request) 
-                    .catch(() => caches.match('index.html'))
-            })
-    )
+self.addEventListener("fetch", (event) => {
+  console.log("Fetch event for ", event.request.url);
+  event.respondWith(
+    caches
+      .match(event.request)
+      .then((response) => {
+        if (response) {
+          console.log("Found ", event.request.url, " in cache");
+          return response;
+        }
+        console.log("Network request for ", event.request.url);
+        return fetch(event.request)
+          .then((response) => {
+            return caches.open(cacheName).then((cache) => {
+              if (response.type === "basic") {
+                cache.put(event.request.url, response.clone());
+              }
+              return response;
+            });
+          })
+          .catch(() => {
+            return caches.match("./").then((response) => {
+              if (response) {
+                console.log("Found ", event.request.url, " in cache");
+                console.log(response);
+                return response;
+              }
+            });
+          });
+      })
+      .catch((error) => {
+        console.log("error in loading pages");
+      })
+  );
 });
 
-// Activate the SW
-self.addEventListener('activate', (event) => {
-    const cacheWhitelist = [];
-    cacheWhitelist.push(CACHE_NAME);
+self.addEventListener("activate", (event) => {
+  console.log("Activating new service worker...");
 
-    event.waitUntil(
-        caches.keys().then((cacheNames) => Promise.all(
-            cacheNames.map((cacheName) => {
-                if(!cacheWhitelist.includes(cacheName)) {
-                    return caches.delete(cacheName);
-                }
-            })
-        ))
-            
-    )
+  const cacheAllowlist = [cacheName];
+
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheAllowlist.indexOf(cacheName) === -1) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
 });
