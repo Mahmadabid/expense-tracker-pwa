@@ -8,7 +8,7 @@ import swDev from "./serviceworker";
 
 const messaging = firebase.messaging();
 
-messaging
+Notification
   .requestPermission()
   .then(() => {
     return messaging.getToken();
