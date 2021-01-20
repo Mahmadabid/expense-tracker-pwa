@@ -12,8 +12,9 @@ function App() {
 
   const [islit, setlit] = useState(true);
   
-  
-  getNotifications();
+  useEffect(() => {
+    getNotifications();
+  }, [])
 
   return (
     <AppProvider>
