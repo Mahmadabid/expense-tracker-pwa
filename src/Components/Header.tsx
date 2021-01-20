@@ -6,9 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
-import { getNotifications } from "../Services/Notification";
-import { Button } from "@material-ui/core";
-
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -42,7 +39,6 @@ export const Header: React.FC<Prop3> = ({ islit, setlit }) => {
     <div className={classes.root}>
       <AppBar position="static" className={islit? '': classes.color}>
         <Toolbar>
-          <Button onClick={getNotifications} style={{color: 'white'}}>Notification</Button>
           <Typography variant="h6" className={classes.title}>
             Expense Tracker
           </Typography>
