@@ -18,7 +18,7 @@ function App() {
 
   return (
     <AppProvider>
-      <div className={`${islit? '': 'dark'} body`}>
+      <div className="body">
         <Header islit={islit} setlit={setlit} />
         <div className="container">
           <Balance />

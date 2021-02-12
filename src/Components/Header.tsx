@@ -18,21 +18,23 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: 'center',
     },
     color: {
-      backgroundColor: 'rgb(20, 117, 121)',
+      backgroundColor: 'hsl(227deg 22% 20%)',
     }
   }),
 );
 
-type Prop3 = {
+type Prop = {
   islit: boolean,
   setlit: (bool: boolean) => void,
 }
 
-export const Header: React.FC<Prop3> = ({ islit, setlit }) => {
+export const Header: React.FC<Prop> = ({ islit, setlit }) => {
   const classes = useStyles();
 
   const themeHandle = () => {
     setlit(!islit);
+    var element = document.body;
+    element.classList.toggle("dark-mode");
   };
 
   return (
